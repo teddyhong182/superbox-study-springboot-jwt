@@ -1,4 +1,4 @@
-package com.superbox.study.oauth;
+package com.superbox.study;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

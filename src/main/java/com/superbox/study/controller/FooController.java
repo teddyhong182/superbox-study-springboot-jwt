@@ -1,5 +1,6 @@
-package com.superbox.study.oauth;
+package com.superbox.study.controller;
 
+import com.superbox.study.Foo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

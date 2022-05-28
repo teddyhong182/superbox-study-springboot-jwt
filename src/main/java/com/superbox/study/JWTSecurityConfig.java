@@ -1,4 +1,4 @@
-package com.superbox.study.oauth;
+package com.superbox.study;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.http.HttpMethod;
