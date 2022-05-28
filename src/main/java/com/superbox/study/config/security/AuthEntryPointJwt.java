@@ -1,4 +1,4 @@
-package com.superbox.study.security;
+package com.superbox.study.config.security;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

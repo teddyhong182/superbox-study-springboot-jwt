@@ -1,5 +1,7 @@
 package com.superbox.study.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 /**
  * 회원 정보
  */
+@Builder
+@AllArgsConstructor
 @Getter
 @Setter
 @Entity

@@ -1,4 +1,4 @@
-package com.superbox.study.security;
+package com.superbox.study.config.security;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.superbox.study.entity.Member;

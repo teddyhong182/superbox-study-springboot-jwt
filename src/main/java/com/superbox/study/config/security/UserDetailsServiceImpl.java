@@ -1,4 +1,4 @@
-package com.superbox.study.security;
+package com.superbox.study.config.security;
 
 import com.superbox.study.entity.Member;
 import com.superbox.study.repository.MemberRepository;

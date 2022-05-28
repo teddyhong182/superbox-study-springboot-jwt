@@ -1,4 +1,4 @@
-package com.superbox.study.security;
+package com.superbox.study.config.security;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
