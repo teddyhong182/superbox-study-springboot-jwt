@@ -1,0 +1,23 @@
+###
+POST http://localhost:8081/superbox-study-oauth/api/auth/signup
+Content-Type: application/json
+
+{
+  "username": "noname",
+  "password": "password",
+  "email": "google@google.com"
+}
+
+###
+GET http://localhost:8081/superbox-study-oauth/api/test/all
+Accept: application/json
+
+
+###
+GET http://localhost:8081/superbox-study-oauth/api/test/member
+Accept: application/json
+
+###
+GET http://localhost:8081/superbox-study-oauth/api/test/admin
+Accept: application/json
+

@@ -1,6 +1,7 @@
 package com.superbox.study.controller;
 
 import com.superbox.study.entity.Member;
+import com.superbox.study.entity.Role;
 import com.superbox.study.payload.JwtResponse;
 import com.superbox.study.payload.LoginRequest;
 import com.superbox.study.payload.MessageResponse;
@@ -10,6 +11,7 @@ import com.superbox.study.repository.RoleRepository;
 import com.superbox.study.config.security.JwtUtils;
 import com.superbox.study.config.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,8 +20,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -44,26 +49,34 @@ public class AuthController {
         List<String> roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
     }
 
-//    @PostMapping("/signup")
-//    public ResponseEntity<?> registerMember(@RequestBody SignupRequest request) {
-//        if (memberRepository.existsByUsername(request.getUsername())) {
-//            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-//        }
-//
-//        if (memberRepository.existsByEmail(request.getEmail())) {
-//            return ResponseEntity.badRequest()
-//                    .body(new MessageResponse("Error: Email is already taken!"));
-//        }
-//        // create new member's account
-//        Member.builder()
-//                .username(request.getUsername())
-//                .email(request.getEmail())
-//                .password(passwordEncoder.encode(request.getPassword()))
-//                .build();
-//
-//    }
+    @PostMapping("/signup")
+    public ResponseEntity<?> registerMember(@RequestBody SignupRequest request) {
+        if (memberRepository.existsByUsername(request.getUsername())) {
+            return ResponseEntity.badRequest().body(new MessageResponse("에러 : 아이디는 이미 존재합니다."));
+        }
+
+        if (memberRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.badRequest()
+                    .body(new MessageResponse("에러 : 이메일은 이미 존재합니다."));
+        }
+        // create new member's account
+        Member member = Member.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .build();
+        Role role = roleRepository.findByName(Role.ERole.ROLE_MEMBER)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
+        // 권한
+        Set<Role> roles = new HashSet<>();
+        roles.add(role);
+        member.setRoles(roles);
+        memberRepository.save(member);
+        return ResponseEntity.ok(new MessageResponse("가입되었습니다."));
+    }
 }
