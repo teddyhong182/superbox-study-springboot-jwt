@@ -1,5 +1,5 @@
 ### 가입
-POST http://localhost:8081/superbox-study-oauth/api/auth/signup
+POST http://localhost:8081/superbox-study-jwt/api/auth/signup
 Content-Type: application/json
 
 {
@@ -9,7 +9,7 @@ Content-Type: application/json
 }
 
 ### 인증
-POST http://localhost:8081/superbox-study-oauth/api/auth/signin
+POST http://localhost:8081/superbox-study-jwt/api/auth/signin
 Content-Type: application/json
 
 {
@@ -19,16 +19,16 @@ Content-Type: application/json
 
 
 ### 권한 없는 조회
-GET http://localhost:8081/superbox-study-oauth/api/test/all
+GET http://localhost:8081/superbox-study-jwt/api/test/all
 Accept: application/json
 
 
 ### 회원 권한 조회
-GET http://localhost:8081/superbox-study-oauth/api/test/member
+GET http://localhost:8081/superbox-study-jwt/api/test/member
 Accept: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJub25hbWUiLCJpYXQiOjE2NTM4OTQ4MjEsImV4cCI6MTY1MzkzMDgyMX0.VyURKkmhFZ8xcyorxNEvLcxAjsGyP0FZSBzVHcF0mZp6jlNcTRP-VC2hPN5I64I45TL8ypD_3jtVvvh6MsAdsw
 
 ### 관리자 권한 조회
-GET http://localhost:8081/superbox-study-oauth/api/test/admin
+GET http://localhost:8081/superbox-study-jwt/api/test/admin
 Accept: application/json
 

@@ -4,11 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-//@EnableAuthorizationServer
-public class SuperboxStudySpringbootOauthApplication {
+public class SuperboxApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SuperboxStudySpringbootOauthApplication.class, args);
+        SpringApplication.run(SuperboxApplication.class, args);
     }
 
 }
