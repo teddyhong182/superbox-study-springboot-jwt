@@ -1,4 +1,4 @@
-###
+### 가입
 POST http://localhost:8081/superbox-study-oauth/api/auth/signup
 Content-Type: application/json
 
@@ -8,16 +8,27 @@ Content-Type: application/json
   "email": "google@google.com"
 }
 
-###
+### 인증
+POST http://localhost:8081/superbox-study-oauth/api/auth/signin
+Content-Type: application/json
+
+{
+  "username": "noname",
+  "password": "password"
+}
+
+
+### 권한 없는 조회
 GET http://localhost:8081/superbox-study-oauth/api/test/all
 Accept: application/json
 
 
-###
+### 회원 권한 조회
 GET http://localhost:8081/superbox-study-oauth/api/test/member
 Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJub25hbWUiLCJpYXQiOjE2NTM4OTQ4MjEsImV4cCI6MTY1MzkzMDgyMX0.VyURKkmhFZ8xcyorxNEvLcxAjsGyP0FZSBzVHcF0mZp6jlNcTRP-VC2hPN5I64I45TL8ypD_3jtVvvh6MsAdsw
 
-###
+### 관리자 권한 조회
 GET http://localhost:8081/superbox-study-oauth/api/test/admin
 Accept: application/json
 

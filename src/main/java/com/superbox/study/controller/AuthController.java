@@ -71,7 +71,7 @@ public class AuthController {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .build();
         Role role = roleRepository.findByName(Role.ERole.ROLE_MEMBER)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, ""));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "에러: 요청하신 권한이 없습니다."));
         // 권한
         Set<Role> roles = new HashSet<>();
         roles.add(role);

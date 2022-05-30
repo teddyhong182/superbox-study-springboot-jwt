@@ -1,9 +1,11 @@
 package com.superbox.study.payload;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.util.List;
 
+@Getter
 @AllArgsConstructor
 public class JwtResponse {
 
