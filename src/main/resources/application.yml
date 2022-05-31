@@ -27,4 +27,4 @@ spring:
 superbox:
   app:
     jwtSecret: superbox-study-springboot-security
-    jwtExpirationMs: 36000000
+    jwtExpirationSeconds: 1200
