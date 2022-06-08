@@ -2,10 +2,7 @@ package com.superbox.study.controller;
 
 import com.superbox.study.entity.Member;
 import com.superbox.study.entity.Role;
-import com.superbox.study.payload.JwtResponse;
-import com.superbox.study.payload.LoginRequest;
-import com.superbox.study.payload.MessageResponse;
-import com.superbox.study.payload.SignupRequest;
+import com.superbox.study.payload.*;
 import com.superbox.study.repository.MemberRepository;
 import com.superbox.study.repository.RoleRepository;
 import com.superbox.study.config.security.JwtUtils;
@@ -78,5 +75,20 @@ public class AuthController {
         member.setRoles(roles);
         memberRepository.save(member);
         return ResponseEntity.ok(new MessageResponse("가입되었습니다."));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request) {
+        String requestRefreshToken = request.getRefreshToken();
+        return ResponseEntity.ok().body(null);
+//        return refreshTokenService.findByToken(requestRefreshToken)
+//                .map(refreshTokenService::verifyExpiration)
+//                .map(RefreshToken::getUser)
+//                .map(user -> {
+//                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
+//                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+//                })
+//                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+//                        "Refresh token is not in database!"));
     }
 }

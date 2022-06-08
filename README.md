@@ -17,6 +17,9 @@
 > GET /api/test/agency : access Agency's content
 > 
 > GET /api/test/admin : access Admin's content
+> 
+> POST /api/auth/refresh : response with new accessToken
+> 
 
 # 프로젝트 실행
 
