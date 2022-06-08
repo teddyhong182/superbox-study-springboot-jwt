@@ -1,12 +1,15 @@
 package com.superbox.study.controller;
 
+import com.superbox.study.config.exception.TokenRefreshException;
 import com.superbox.study.entity.Member;
+import com.superbox.study.entity.MemberToken;
 import com.superbox.study.entity.Role;
 import com.superbox.study.payload.*;
 import com.superbox.study.repository.MemberRepository;
 import com.superbox.study.repository.RoleRepository;
 import com.superbox.study.config.security.JwtUtils;
 import com.superbox.study.config.security.UserDetailsImpl;
+import com.superbox.study.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +38,8 @@ public class AuthController {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
+
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateMember(@RequestBody LoginRequest request) {
@@ -77,18 +82,17 @@ public class AuthController {
         return ResponseEntity.ok(new MessageResponse("가입되었습니다."));
     }
 
-    @PostMapping("/refresh")
+    @PostMapping("/refreshToken")
     public ResponseEntity<?> refreshToken(@RequestBody TokenRefreshRequest request) {
         String requestRefreshToken = request.getRefreshToken();
-        return ResponseEntity.ok().body(null);
-//        return refreshTokenService.findByToken(requestRefreshToken)
-//                .map(refreshTokenService::verifyExpiration)
-//                .map(RefreshToken::getUser)
-//                .map(user -> {
-//                    String token = jwtUtils.generateTokenFromUsername(user.getUsername());
-//                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
-//                })
-//                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-//                        "Refresh token is not in database!"));
+        return refreshTokenService.findByToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(MemberToken::getMember)
+                .map(member -> {
+                    String token = jwtUtils.generateTokenFromUsername(member.getUsername());
+                    return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
+                })
+                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
+                        "Refresh token is not in database!"));
     }
 }

@@ -90,4 +90,7 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
+    public String generateTokenFromUsername(String username) {
+        return null;
+    }
 }
