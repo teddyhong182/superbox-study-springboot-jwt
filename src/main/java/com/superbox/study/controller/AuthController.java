@@ -1,14 +1,13 @@
 package com.superbox.study.controller;
 
-import com.superbox.study.config.exception.TokenRefreshException;
+import com.superbox.study.config.security.JwtUtils;
+import com.superbox.study.config.security.UserDetailsImpl;
 import com.superbox.study.entity.Member;
 import com.superbox.study.entity.MemberToken;
 import com.superbox.study.entity.Role;
 import com.superbox.study.payload.*;
 import com.superbox.study.repository.MemberRepository;
 import com.superbox.study.repository.RoleRepository;
-import com.superbox.study.config.security.JwtUtils;
-import com.superbox.study.config.security.UserDetailsImpl;
 import com.superbox.study.service.RefreshTokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,6 +51,8 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
+        MemberToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+
         return ResponseEntity.ok(new JwtResponse(jwt,
                 userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
     }
@@ -92,7 +93,6 @@ public class AuthController {
                     String token = jwtUtils.generateTokenFromUsername(member.getUsername());
                     return ResponseEntity.ok(new TokenRefreshResponse(token, requestRefreshToken));
                 })
-                .orElseThrow(() -> new TokenRefreshException(requestRefreshToken,
-                        "Refresh token is not in database!"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN, String.format("Failed for [%s]: Refresh token is not in database!", requestRefreshToken)));
     }
 }

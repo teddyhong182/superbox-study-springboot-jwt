@@ -24,7 +24,7 @@ public class JwtUtils {
 
     @Value("${superbox.app.jwtSecret}")
     private String jwtSecret;
-    @Value("${superbox.app.jwtExpirationMins}")
+    @Value("${superbox.app.jwtExpirationSeconds}")
     private int jwtExpirationSeconds;
 
     public String generateJwtToken(Authentication authentication) {

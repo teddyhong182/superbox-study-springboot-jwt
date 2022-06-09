@@ -1,16 +1,10 @@
 package com.superbox.study.config;
 
-import com.superbox.study.config.exception.TokenRefreshException;
 import com.superbox.study.payload.MessageResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.NestedRuntimeException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -29,18 +23,6 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> responseStatusException(ResponseStatusException e) {
         log.error(e.getMessage());
         e.printStackTrace();
-        return ResponseEntity.badRequest().body(new MessageResponse(e.getReason()));
-    }
-
-    @ExceptionHandler(value = TokenRefreshException.class)
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<?> handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
-//        log.error(ex.getMess);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new MessageResponse(""));
-//        return new ErrorMessage(
-//                HttpStatus.FORBIDDEN.value(),
-//                new Date(),
-//                ex.getMessage(),
-//                request.getDescription(false));
+        return ResponseEntity.status(e.getStatus()).body(new MessageResponse(e.getReason()));
     }
 }
