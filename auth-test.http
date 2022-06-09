@@ -17,18 +17,21 @@ Content-Type: application/json
   "password": "password"
 }
 
+> {% client.global.set("auth_token", response.body.token); %}
 
 ### 권한 없는 조회
 GET http://localhost:8081/superbox-study-jwt/api/test/all
 Accept: application/json
-
+Authorization: Bearer {{auth_token}}
 
 ### 회원 권한 조회
 GET http://localhost:8081/superbox-study-jwt/api/test/member
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJub25hbWUiLCJpYXQiOjE2NTM4OTQ4MjEsImV4cCI6MTY1MzkzMDgyMX0.VyURKkmhFZ8xcyorxNEvLcxAjsGyP0FZSBzVHcF0mZp6jlNcTRP-VC2hPN5I64I45TL8ypD_3jtVvvh6MsAdsw
+Authorization: Bearer {{auth_token}}
+
 
 ### 관리자 권한 조회
 GET http://localhost:8081/superbox-study-jwt/api/test/admin
 Accept: application/json
+Authorization: Bearer {{auth_token}}
 
