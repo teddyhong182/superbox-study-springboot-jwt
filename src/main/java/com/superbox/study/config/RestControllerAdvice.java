@@ -16,7 +16,7 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<?> unknownException(Exception ex) {
         log.error(ex.getMessage());
         ex.printStackTrace();
-        return ResponseEntity.internalServerError().body(new MessageResponse("서버가 정상작동하지 않습니다. 다시 시도해 주시기 바랍니다."));
+        return ResponseEntity.internalServerError().body(new MessageResponse(ex.getLocalizedMessage()));
     }
 
     @ExceptionHandler(value = { ResponseStatusException.class })

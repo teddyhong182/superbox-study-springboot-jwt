@@ -1,13 +1,11 @@
 package com.superbox.study.config;
 
 import com.superbox.study.config.security.AuthEntryPointJwt;
-import com.superbox.study.config.security.AuthTokenFilter;
+import com.superbox.study.config.security.JwtAuthenticationFilter;
 import com.superbox.study.config.security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -35,8 +33,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthEntryPointJwt unauthorizedHandler;
 
     @Bean
-    public AuthTokenFilter authenticationJwtTokenFilter() {
-        return new AuthTokenFilter();
+    public JwtAuthenticationFilter authenticationJwtTokenFilter() {
+        return new JwtAuthenticationFilter();
     }
 
     @Override
@@ -72,9 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
                 .antMatchers("/h2/**").permitAll()
-                .anyRequest().authenticated();
-
-        // 인증이 필요할때 어떤 필터를 언제 작동할 것인지
-        http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated().and()
+                // 인증이 필요할때 어떤 필터를 언제 작동할 것인지 (UsernamePasswordAuthenticationFilter Filter 전에 동작)
+                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 }

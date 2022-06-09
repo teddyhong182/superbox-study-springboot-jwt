@@ -15,8 +15,6 @@ import java.security.Key;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 @Component
@@ -28,20 +26,14 @@ public class JwtUtils {
     private int jwtExpirationSeconds;
 
     public String generateJwtToken(Authentication authentication) {
-        //Header 부분 설정
-        Map<String, Object> headers = new HashMap<>();
-        headers.put("typ", "JWT");
-        headers.put("alg", "HS512");
-
         // 주요 정보
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
         Date now = new Date();
         return Jwts.builder()
-                .setHeader(headers)
                 .setSubject(userPrincipal.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(Timestamp.valueOf(LocalDateTime.now().plusSeconds(jwtExpirationSeconds)))
-                .signWith(getSignKey(), SignatureAlgorithm.HS512)
+                .signWith(getSignKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
