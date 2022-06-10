@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class TokenRefreshRequest {
 
+    private String memberId;
+
     private String refreshToken;
 
 }

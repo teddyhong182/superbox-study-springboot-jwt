@@ -51,10 +51,15 @@ public class AuthController {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        MemberToken refreshToken = refreshTokenService.createRefreshToken(userDetails.getId());
+        MemberToken memberToken = refreshTokenService.createRefreshToken(userDetails.getId());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles));
+        return ResponseEntity.ok(JwtResponse.builder()
+                .token(jwt).id(userDetails.getId())
+                .username(userDetails.getUsername())
+                .email(userDetails.getEmail())
+                .roles(roles)
+                .refreshToken(memberToken.getToken())
+                .build());
     }
 
     @PostMapping("/signup")
