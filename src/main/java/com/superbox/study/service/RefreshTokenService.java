@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
@@ -24,13 +25,13 @@ public class RefreshTokenService {
     private final MemberRepository memberRepository;
     private final MemberTokenRepository memberTokenRepository;
 
-
-
+    @Transactional
     public Optional<MemberToken> findByToken(String refreshToken) {
         return memberTokenRepository.findByToken(refreshToken);
     }
 
     public MemberToken verifyExpiration(MemberToken token) {
+        // TODO 중복 허용을 할 것 인지에 따라 1개의 데이터만 관리
         // 만료시 삭제
         if (token.getExpireAt().compareTo(LocalDateTime.now()) < 0) {
             memberTokenRepository.delete(token);
@@ -39,6 +40,7 @@ public class RefreshTokenService {
         return token;
     }
 
+    @Transactional
     public MemberToken createRefreshToken(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "에러: 회원 정보가 없습니다."));
 
@@ -49,5 +51,11 @@ public class RefreshTokenService {
                 .build();
 
         return memberTokenRepository.save(memberToken);
+    }
+
+    @Transactional
+    public MemberToken postponeExpiryAt(MemberToken memberToken) {
+        memberToken.setExpireAt(LocalDateTime.now().plusSeconds(expirationSeconds));
+        return memberToken;
     }
 }

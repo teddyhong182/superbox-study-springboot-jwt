@@ -37,7 +37,6 @@ public class AuthController {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
-
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signin")
@@ -93,6 +92,7 @@ public class AuthController {
         String requestRefreshToken = request.getRefreshToken();
         return refreshTokenService.findByToken(requestRefreshToken)
                 .map(refreshTokenService::verifyExpiration)
+                .map(refreshTokenService::postponeExpiryAt)
                 .map(MemberToken::getMember)
                 .map(member -> {
                     String token = jwtUtils.generateTokenFromUsername(member.getUsername());

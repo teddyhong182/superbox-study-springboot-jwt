@@ -35,3 +35,13 @@ GET http://localhost:8081/superbox-study-jwt/api/test/admin
 Accept: application/json
 Authorization: Bearer {{auth_token}}
 
+### refresh token 갱신
+POST http://localhost:8081/superbox-study-jwt/api/auth/refreshToken
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "memberId": "1",
+  "refreshToken": "2e27cd6f-6d63-4873-8609-a6bc5f8766fe"
+}
+

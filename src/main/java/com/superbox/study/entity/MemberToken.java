@@ -14,12 +14,11 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 public class MemberToken {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId", referencedColumnName = "id")
     private Member member;
 
