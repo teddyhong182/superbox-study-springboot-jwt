@@ -63,6 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
                 .csrf().ignoringAntMatchers("/h2/**").disable()
+                // 인증 실패 시 에러 처리 (사용자 정의)
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 // 스프링시큐리티가 생성하지도 않고, 기존것을 사용하지도 않음
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
